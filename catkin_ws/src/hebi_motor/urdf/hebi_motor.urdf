@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+
+<robot name="hebi_motor">
+
+
+<!-- Gazebo -->
+<gazebo>
+  <plugin filename="libhebi_gazebo_plugin.so" name="hebi_gazebo_plugin"/>
+  <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control"/>
+</gazebo>
+
+
+<!-- Fixing Hebi to the ground (world) -->
+<link name="world"/>
+<joint name="world_joint" type="fixed">
+  <origin rpy="0 0 0" xyz="0 0 0"/>
+  <parent link="world"/>
+  <child link="Arm/J1_shoulder/INPUT_INTERFACE"/>
+</joint>
+
+
+<!-- Motor -->
+<link name="Arm/J1_shoulder/INPUT_INTERFACE">
+
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/X8.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="red">
+      <color rgba=".82 0.06 0.06 1"/>
+    </material>
+  </visual>
+
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/X8.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+
+  <inertial>
+    <mass value="0.48"/>
+    <origin rpy="0 0 0" xyz="-0.0145 -0.0031 0.0242"/>
+    <inertia ixx="0.000246" ixy="0.0000444" ixz="0.0000266" iyy="0.000380" iyz="0.00000422" izz="0.000463"/>
+  </inertial>
+
+</link>
+
+<gazebo reference="Arm/J1_shoulder/INPUT_INTERFACE">
+  <material>Gazebo/Red</material>
+</gazebo>
+
+
+<!-- Connection sphere -->
+<link name="HEBI_SIM/Arm/J1_shoulder/X8_9">
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.03 0 0.02"/>
+    <geometry>
+      <sphere radius="0.001"/>
+    </geometry>
+  </visual>
+  <inertial>
+    <mass value="0.001"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+  </inertial>
+</link>
+
+
+<!-- Fixed Joint to connect the Motor with the Sphere -->
+<joint name="HEBI_SIM_JOINT/Arm/J1_shoulder" type="fixed">
+  <parent link="Arm/J1_shoulder/INPUT_INTERFACE"/>
+  <child link="HEBI_SIM/Arm/J1_shoulder/X8_9"/>
+  <origin rpy="0 0 0" xyz="0 0 0"/>
+</joint>
+<gazebo reference="HEBI_SIM_JOINT/Arm/J1_shoulder">
+  <disableFixedJointLumping>true</disableFixedJointLumping>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+
+<!-- Revolute Joint between Motor and Link -->
+<joint name="Arm/J1_shoulder" type="continuous">
+  <parent link="Arm/J1_shoulder/INPUT_INTERFACE"/>
+  <child link="shoulder_elbow/INPUT_INTERFACE"/>
+  <origin rpy="0 0 0" xyz="0 0 0.045"/>
+  <axis xyz="0 0 1"/>
+  <limit effort="20" velocity="30" upper="0.1" lower="-0.1"/>
+  <dynamics damping="0.5" friction="0.5"/>
+</joint>
+
+
+<!-- Link -->
+<link name="shoulder_elbow/INPUT_INTERFACE">
+  <!-- Input Cap -->
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/A-2038-02.stl"/>
+    </geometry>
+    <material name="black">
+      <color rgba="0.1 0.1 0.1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/A-2038-02.stl"/>
+    </geometry>
+  </collision>
+  <!-- Link Pipe -->
+  <visual>
+    <origin rpy="0 1.57075 0" xyz="0.2625 0 0.02"/>
+    <geometry>
+      <cylinder length="0.4996" radius=".016"/>
+    </geometry>
+    <material name="black">
+      <color rgba="0.1 0.1 0.1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin rpy="0 1.57075 0" xyz="0.2625 0 0.02"/>
+    <geometry>
+      <cylinder length="0.4996" radius=".016"/>
+    </geometry>
+  </collision>
+  <!-- Output Cap -->
+  <visual>
+    <origin rpy="0 0 0" xyz="0.525 0.0 0.04"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/A-2039-02.stl"/>
+    </geometry>
+    <material name="black">
+      <color rgba="0.1 0.1 0.1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.525 0.0 0.04"/>
+    <geometry>
+      <mesh filename="package://hebi_motor/meshes/A-2039-02.stl"/>
+    </geometry>
+  </collision>
+  <!-- Approximate inertia as thin rod about x axis -->
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.2625 0 0.02"/>
+    <mass value="0.482"/>
+    <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0110709375" iyz="0.0" izz="0.0110709375"/>
+  </inertial>
+</link>
+
+<gazebo reference="shoulder_elbow/INPUT_INTERFACE">
+  <material>Gazebo/Black</material>
+</gazebo>
+
+
+<!-- End Effector -->
+
+<joint name="shoulder_elbow/OUTPUT_JOINT" type="continuous">
+  <parent link="shoulder_elbow/INPUT_INTERFACE"/>
+  <child link="eef_link"/>
+  <origin rpy="0 0 0" xyz="0.525 -0.0 0.04"/>
+</joint>
+<gazebo reference="shoulder_elbow/OUTPUT_JOINT">
+  <disableFixedJointLumping>true</disableFixedJointLumping>
+  <preserveFixedJoint>true</preserveFixedJoint>
+</gazebo>
+
+
+<link name="eef_link">
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <box size="0.005 0.005 0.005"/>
+    </geometry>
+    <material name="red">
+      <color rgba=".82 0.06 0.06 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <box size="0.005 0.005 0.005"/>
+    </geometry>
+  </collision>
+  <inertial>
+    <mass value="0.48"/>
+    <origin rpy="0 0 0" xyz="-0.0145 -0.0031 0.0242"/>
+    <inertia ixx="0.000246" ixy="0.0000444" ixz="0.0000266" iyy="0.000380" iyz="0.00000422" izz="0.000463"/>
+  </inertial>
+</link>
+<gazebo reference="eef_link">
+  <material>Gazebo/Red</material>
+</gazebo>
+
+
+
+
+<!-- Transmition for Gazebo -->
+<!--
+<transmission name="trans_Arm/J1_shoulder">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Arm/J1_shoulder">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Arm/J1_shoulder_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+</transmission>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+-->
+
+
+
+    <transmission name="trans_Arm/J1_shoulder">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="Arm/J1_shoulder">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="Arm/J1_shoulder_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>/</robotNamespace>
+            </plugin>
+        </gazebo>
+        <transmission name="trans_Arm/J1_shoulder">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="Arm/J1_shoulder">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="Arm/J1_shoulder_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <transmission name="trans_shoulder_elbow/OUTPUT_JOINT">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="shoulder_elbow/OUTPUT_JOINT">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="shoulder_elbow/OUTPUT_JOINT_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>/</robotNamespace>
+            </plugin>
+        </gazebo>
+
+</robot>

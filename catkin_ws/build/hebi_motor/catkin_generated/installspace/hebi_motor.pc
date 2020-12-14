@@ -1,0 +1,8 @@
+prefix=/home/florian/Aigritec/X8-9/catkin_ws/install
+
+Name: hebi_motor
+Description: Description of hebi_motor
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: hebi_cpp_api rospy std_msgs message_runtime

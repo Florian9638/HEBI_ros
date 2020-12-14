@@ -1,0 +1,8 @@
+controller_list:
+  - name: fake_hebi_arm_controller
+    joints:
+      - Arm/J1_shoulder
+      - shoulder_elbow/OUTPUT_JOINT
+initial:  # Define initial robot poses.
+  - group: hebi_arm
+    pose: straight

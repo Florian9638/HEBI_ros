@@ -1,0 +1,3 @@
+controller_joint_names:
+      - Arm/J1_shoulder
+      - shoulder_elbow/OUTPUT_JOINT

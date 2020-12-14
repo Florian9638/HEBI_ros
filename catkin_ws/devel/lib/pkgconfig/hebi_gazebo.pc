@@ -1,0 +1,8 @@
+prefix=/home/florian/Aigritec/X8-9/catkin_ws/devel
+
+Name: hebi_gazebo
+Description: Description of hebi_gazebo
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
