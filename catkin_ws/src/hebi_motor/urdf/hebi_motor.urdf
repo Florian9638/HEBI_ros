@@ -49,6 +49,8 @@
 
 <gazebo reference="Arm/J1_shoulder/INPUT_INTERFACE">
   <material>Gazebo/Red</material>
+  <mu1>0.61</mu1>
+  <mu2>0.61</mu2>
 </gazebo>
 
 
@@ -73,6 +75,7 @@
   <parent link="Arm/J1_shoulder/INPUT_INTERFACE"/>
   <child link="HEBI_SIM/Arm/J1_shoulder/X8_9"/>
   <origin rpy="0 0 0" xyz="0 0 0"/>
+  <dynamics damping="0.5"/>
 </joint>
 <gazebo reference="HEBI_SIM_JOINT/Arm/J1_shoulder">
   <disableFixedJointLumping>true</disableFixedJointLumping>
@@ -151,7 +154,10 @@
 
 <gazebo reference="shoulder_elbow/INPUT_INTERFACE">
   <material>Gazebo/Black</material>
+  <mu1>0.61</mu1>
+  <mu2>0.61</mu2>
 </gazebo>
+
 
 
 <!-- End Effector -->
@@ -191,31 +197,13 @@
 </link>
 <gazebo reference="eef_link">
   <material>Gazebo/Red</material>
+  <mu1>0.61</mu1>
+  <mu2>0.61</mu2>
 </gazebo>
 
 
 
-
-<!-- Transmition for Gazebo -->
-<!--
-<transmission name="trans_Arm/J1_shoulder">
-        <type>transmission_interface/SimpleTransmission</type>
-        <joint name="Arm/J1_shoulder">
-            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-        </joint>
-        <actuator name="Arm/J1_shoulder_motor">
-            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-            <mechanicalReduction>1</mechanicalReduction>
-        </actuator>
-</transmission>
-
-    <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/</robotNamespace>
-        </plugin>
-    </gazebo>
--->
-
+<!-- Transmission for Gazebo -->
 
 
     <transmission name="trans_Arm/J1_shoulder">
@@ -228,21 +216,14 @@
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
+        <!--
         <gazebo>
             <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
                 <robotNamespace>/</robotNamespace>
             </plugin>
         </gazebo>
-        <transmission name="trans_Arm/J1_shoulder">
-            <type>transmission_interface/SimpleTransmission</type>
-            <joint name="Arm/J1_shoulder">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-            </joint>
-            <actuator name="Arm/J1_shoulder_motor">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-                <mechanicalReduction>1</mechanicalReduction>
-            </actuator>
-        </transmission>
+-->
+
         <transmission name="trans_shoulder_elbow/OUTPUT_JOINT">
             <type>transmission_interface/SimpleTransmission</type>
             <joint name="shoulder_elbow/OUTPUT_JOINT">
@@ -253,10 +234,11 @@
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
         </transmission>
+        <!--
         <gazebo>
             <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
                 <robotNamespace>/</robotNamespace>
             </plugin>
         </gazebo>
-
+      -->
 </robot>
