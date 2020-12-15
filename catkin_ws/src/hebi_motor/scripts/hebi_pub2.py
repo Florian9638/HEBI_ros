@@ -2,6 +2,7 @@
 
 import rospy
 from hebi_motor.msg import custom_msg  # from <package_name> import <message_name>
+# The above imported custom message can be found in the folder hebi_motor/msg
 
 def publisher():
 
@@ -15,7 +16,7 @@ def publisher():
         # Desired joint angle
         theta = input('Enter desired joint value in radiants: ')
 
-        msg_to_publish.num_float = theta # 'data' is the name of a desired float64 value
+        msg_to_publish.num_float = theta # 'num_float' is the name of a desired float64 value
 
         pub.publish(msg_to_publish) # what this node is going to publish
 
