@@ -1,7 +1,9 @@
 <launch>
 
-<!-- URDF -> Param Server -->
-<param name="robot_description" textfile="$(find hebi_motor)/urdf/hebi_motor.urdf" />
+	<param name="robot_description" textfile="$(find hebi_motor)/urdf/hebi_motor.urdf" />
+
+
+
 
 <!-- GAZEBO arguments -->
 <arg name="paused" default="false"/>
@@ -19,23 +21,31 @@
 	<arg name="headless" value="$(arg headless)"/>
 </include>
 
-<!-- Spawner -->
-<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
- args="-param robot_description -urdf -model hebi_motor -x 0 -y 0 -z 0" />
+<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model hebi_motor"/>
+
+
+
 
 <!-- Load joint controller configurations from YAML file to parameter server -->
-<rosparam file="$(find controller_gains)/config/arm_controller.yaml" command="load"/>
+<rosparam file="$(find controller_gains)/config/arm_control.yaml" command="load"/>
 
 <!-- load the controllers -->
 <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller hebi_arm_controller" />
 
+
+
+
 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+
 
 <include file="$(find hebi_moveit_config)/launch/planning_context.launch">
   <arg name="load_robot_description" value="true"/>
 </include>
 <include file="$(find hebi_moveit_config)/launch/move_group.launch" />
 <include file="$(find hebi_moveit_config)/launch/moveit_rviz.launch" />
+
+
 
 <node name="joint_state_desired_publisher" pkg="topic_tools" type="relay" args="joint_states joint_states_desired" />
 
