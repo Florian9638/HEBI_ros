@@ -1,0 +1,20 @@
+#hebi_motor:
+    # Publish joint states
+    joint_state_controller:
+        type: joint_state_controller/JointStateController
+        publish_rate: 50
+
+    hebi_arm_controller:
+        type: effort_controllers/JointTrajectoryController
+        joints:
+            - Arm/J1_shoulder
+            - shoulder_elbow/OUTPUT_JOINT
+
+        gains:
+            Arm/J1_shoulder: { p: 50, d: 0, i: 0 }
+            shoulder_elbow/OUTPUT_JOINT: { p: 50, d: 0, i: 0 }
+
+#        constraints:
+#            goal_time: 2.0
+#
+#        state_publish_rate: 25
