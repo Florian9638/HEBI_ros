@@ -26,6 +26,13 @@
 
 
 
+<!-- Parameters for the module names -->
+<rosparam file="$(find hebi_moveit_config)/config/family_module.yaml" command="load" />
+  <node pkg="hebi_cpp_api_examples" type="diff_drive_node" name="diff_drive_node" />
+
+
+
+
 <!-- Load joint controller configurations from YAML file to parameter server -->
 <rosparam file="$(find controller_gains)/config/arm_control.yaml" command="load"/>
 

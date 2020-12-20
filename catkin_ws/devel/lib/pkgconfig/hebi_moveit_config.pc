@@ -1,8 +1,0 @@
-prefix=/home/florian/Aigritec/X8-9/catkin_ws/devel
-
-Name: hebi_moveit_config
-Description: Description of hebi_moveit_config
-Version: 0.3.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

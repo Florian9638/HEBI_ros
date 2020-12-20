@@ -1,8 +1,0 @@
-prefix=/home/florian/Aigritec/X8-9/catkin_ws/install
-
-Name: controller_gains
-Description: Description of controller_gains
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

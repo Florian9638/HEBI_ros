@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import rospy
 import hebi
@@ -28,12 +28,10 @@ def subscriber():
     rospy.spin()
 
 # callback_function: is a function that is called every time a message is published to the topic
-# In this case, the callback_function is waiting for a float value that indicates
-# the angle about which the joint has to rotate (in radiants)
 def callback_function(message):
 
     group_command  = hebi.GroupCommand(group.size)
-    group_command.position = message.num_float # angle in radiants
+    group_command.position = message.num_float
     group.send_command(group_command)
     rospy.loginfo(message.num_float) # to print the published message in the terminal
 

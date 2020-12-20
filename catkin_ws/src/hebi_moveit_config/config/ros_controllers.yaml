@@ -9,7 +9,7 @@ generic_hw_control_loop:
 # Settings for ros_control hardware interface
 hardware_interface:
   joints:
-    - Arm/J1_shoulder
+    - Arm/J1_shoulder/X8-9
     - shoulder_elbow/OUTPUT_JOINT
   sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
